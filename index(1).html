@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi organizador por lugares</title>
+  <style>
+    :root{--bg:#f6f1e8;--card:#fffaf1;--ink:#1f2933;--muted:#7b6f62;--line:#e5d8c8;--accent:#2f6f5e;--accent2:#d58b49;--danger:#b94b4b;--ok:#477c54;--shadow:0 18px 45px rgba(40,32,22,.12);--r:24px}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#faf7f0,#efe6d9);color:var(--ink)}
+    .app{max-width:1120px;margin:0 auto;padding:24px 14px 48px}.panel{background:rgba(255,250,241,.9);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;backdrop-filter:blur(10px)}
+    .loginWrap{min-height:92vh;display:grid;place-items:center;padding:18px}.loginCard{width:min(520px,100%);background:#fffaf1;border:1px solid var(--line);border-radius:34px;box-shadow:0 24px 80px rgba(38,30,18,.18);padding:24px}.loginIcon{width:72px;height:72px;border-radius:24px;background:linear-gradient(135deg,var(--accent),#83b39d);display:grid;place-items:center;color:white;font-size:34px;margin-bottom:14px}.loginCard h1{font-size:clamp(32px,7vw,52px);margin:0;letter-spacing:-.05em}.loginCard p{color:var(--muted);font-weight:700;line-height:1.45}.accountList{display:grid;gap:8px;margin-top:12px}.accountBtn{border:1px solid var(--line);background:#fffdf8;border-radius:18px;padding:12px 14px;text-align:left;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.accountBtn:hover{border-color:var(--accent)}.authActions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.authMsg{min-height:22px;margin-top:10px;font-size:14px;font-weight:800;color:var(--accent)}.authMsg.error{color:var(--danger)}.authNote{font-size:12px!important;font-weight:600!important}.loading{opacity:.65;pointer-events:none}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:stretch;margin-bottom:16px}.brand{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;border-radius:18px;background:linear-gradient(135deg,var(--accent),#83b39d);display:grid;place-items:center;color:white;font-size:26px;box-shadow:0 10px 25px rgba(47,111,94,.25)}h1{margin:0;font-size:clamp(26px,4vw,44px);letter-spacing:-.04em}.sub{margin:6px 0 0;color:var(--muted);font-size:15px}.accountLine{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.accountTag{background:#eaf3ee;border:1px solid #bdd8c8;color:#245846;border-radius:999px;padding:7px 10px;font-size:13px;font-weight:900}.where{display:flex;flex-direction:column;justify-content:center;gap:10px}.where label{font-size:15px;color:var(--muted);font-weight:700}.selectRow{display:flex;gap:10px;align-items:center}.selectBig{flex:1;min-width:0;border:2px solid #d9cab8;border-radius:999px;background:#fffdf8;padding:15px 18px;font-size:18px;font-weight:800;color:var(--ink);outline:none}.selectBig:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(47,111,94,.12)}
+    .topTask{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;margin:12px 0 16px}.badgeRound{width:72px;height:72px;border-radius:24px;background:#fff3da;border:1px solid #ead8bb;display:grid;place-items:center;font-size:34px}.topTask h2{margin:0;font-size:24px;letter-spacing:-.03em}.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;font-weight:800;font-size:13px;border:1px solid var(--line);background:#fffdf8}.chip.high{background:#ffe7e1;border-color:#ffc3b5;color:#9d3325}.chip.mid{background:#fff4cf;border-color:#e8cc78;color:#7a5813}.chip.low{background:#eaf3ee;border-color:#bcd8c7;color:#245846}.deadline{font-size:13px;color:var(--muted);font-weight:700}.grid{display:grid;grid-template-columns:370px 1fr;gap:16px}.stack{display:grid;gap:16px}.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}h3{margin:0;font-size:18px;letter-spacing:-.02em}.hint{font-size:13px;color:var(--muted)}
+    input,select,textarea{width:100%;border:1.5px solid #dccfbd;border-radius:16px;background:#fffdf8;padding:12px 13px;font-size:16px;color:var(--ink);outline:none}textarea{min-height:74px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(47,111,94,.10)}.formGrid{display:grid;gap:10px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:16px;padding:12px 14px;font-weight:900;font-size:15px;cursor:pointer;background:#eee2d2;color:var(--ink);min-height:44px}.btn.primary{background:var(--accent);color:white}.btn.orange{background:var(--accent2);color:white}.btn.ghost{background:#fffdf8;border:1px solid var(--line)}.btn.danger{background:#ffe9e7;color:var(--danger)}.btn:active{transform:translateY(1px)}
+    .places{display:flex;flex-wrap:wrap;gap:8px}.placePill{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fffdf8;border-radius:999px;padding:8px 10px;font-weight:800}.placePill button{border:0;background:transparent;color:var(--danger);font-weight:900;cursor:pointer}.tasks{display:grid;gap:12px}.task{border:1px solid var(--line);background:#fffdf8;border-radius:22px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px;position:relative;overflow:hidden}.task:before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:#ddd}.task.p5:before{background:#cf4d3f}.task.p4:before{background:#e98b42}.task.p3:before{background:#d7b64a}.task.p2:before{background:#75a883}.task.p1:before{background:#aeb8b1}.task.doneToday{opacity:.72}.task.doneToday .name{text-decoration:line-through}.name{font-size:18px;font-weight:950;margin:0 0 7px;letter-spacing:-.02em}.meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px}.note{color:var(--muted);font-size:14px;margin:0}.actions{display:flex;flex-direction:column;gap:8px;min-width:130px}.empty{border:1px dashed #cdbda8;border-radius:20px;padding:22px;text-align:center;color:var(--muted);background:rgba(255,253,248,.55)}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.small{font-size:13px;padding:9px 11px;border-radius:13px;min-height:38px}.toast{margin-top:10px;color:var(--accent);font-weight:800;font-size:14px;min-height:20px}.count{background:#efe4d5;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;color:#6b5c4c}.history{display:grid;gap:8px}.historyItem{display:flex;justify-content:space-between;gap:12px;background:#fffdf8;border:1px solid var(--line);border-radius:16px;padding:10px 12px;font-size:14px}.historyItem span:last-child{color:var(--muted);white-space:nowrap}.hidden{display:none!important}
+    @media(max-width:850px){.hero,.grid{grid-template-columns:1fr}.topTask{grid-template-columns:58px 1fr}.badgeRound{width:58px;height:58px;border-radius:20px;font-size:28px}.topTask .btn{grid-column:1/-1}.task{grid-template-columns:1fr}.actions{flex-direction:row;flex-wrap:wrap}.actions .btn{flex:1}.two{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <section id="loginScreen" class="loginWrap">
+    <div class="loginCard" id="loginCard">
+      <div class="loginIcon">🔐</div>
+      <h1>Entra a tu cuenta</h1>
+      <p>Inicia sesión para que tus lugares y tareas se guarden online y aparezcan en cualquier dispositivo.</p>
+      <form id="loginForm" class="formGrid">
+        <input id="email" type="email" autocomplete="email" placeholder="Tu email" required />
+        <input id="password" type="password" autocomplete="current-password" placeholder="Contraseña" minlength="6" required />
+        <div class="authActions">
+          <button class="btn primary" type="submit">Iniciar sesión</button>
+          <button class="btn ghost" id="signupBtn" type="button">Crear cuenta</button>
+        </div>
+      </form>
+      <div id="authMsg" class="authMsg"></div>
+      <p class="hint authNote">Cada usuario solo puede acceder a sus propios datos.</p>
+    </div>
+  </section>
+
+  <main id="mainApp" class="app hidden">
+    <section class="hero">
+      <div class="panel">
+        <div class="brand"><div class="logo">📍</div><div><h1>Mi organizador</h1><p class="sub">Eliges dónde estás y te ordena qué hacer primero.</p></div></div>
+        <div class="accountLine"><span id="activeAccountTag" class="accountTag"></span><button id="changeAccountBtn" class="btn ghost small" type="button">Cerrar sesión</button></div>
+      </div>
+      <div class="panel where">
+        <label for="currentPlace">¿Dónde te encuentras?</label>
+        <div class="selectRow"><select id="currentPlace" class="selectBig"></select></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="sectionTitle"><div><h3>Lo más importante ahora</h3><p class="hint">Primero manda la importancia; después, el menor tiempo restante.</p></div><span id="pendingCount" class="count">0 pendientes</span></div>
+      <div id="topTaskBox" class="topTask"></div>
+    </section>
+
+    <section class="grid" style="margin-top:16px">
+      <div class="stack">
+        <div class="panel">
+          <div class="sectionTitle"><h3>Guardar lugares</h3><span class="hint">Casa, uni, biblioteca...</span></div>
+          <form id="placeForm" class="formGrid">
+            <input id="placeName" placeholder="Nuevo lugar" />
+            <button class="btn primary" type="submit">Guardar lugar</button>
+          </form>
+          <div id="placeMsg" class="toast"></div>
+          <div id="placesList" class="places"></div>
+        </div>
+
+        <div class="panel">
+          <div class="sectionTitle"><h3>Añadir cosa que puedes hacer</h3></div>
+          <form id="taskForm" class="formGrid">
+            <input id="taskName" placeholder="Ej: Practicar responder exámenes" required />
+            <div class="two">
+              <select id="taskPlace"></select>
+              <select id="taskPriority">
+                <option>Muy alta</option><option>Alta</option><option>Intermedia</option><option>Baja</option><option>Muy baja</option>
+              </select>
+            </div>
+            <label class="hint" for="taskDeadline">¿Hasta cuándo tienes para hacerlo?</label>
+            <input id="taskDeadline" type="date" required />
+            <textarea id="taskNotes" placeholder="Notas opcionales"></textarea>
+            <button class="btn orange" type="submit">Añadir tarea</button>
+          </form>
+          <div id="taskMsg" class="toast"></div>
+        </div>
+
+        <div class="panel">
+          <div class="sectionTitle"><h3>Copia de seguridad</h3></div>
+          <textarea id="backupBox" placeholder="Aquí aparece tu copia de seguridad"></textarea>
+          <div class="toolbar"><button id="exportBtn" class="btn ghost small" type="button">Exportar</button><button id="importBtn" class="btn ghost small" type="button">Importar</button><button id="clearBtn" class="btn danger small" type="button">Borrar todo</button></div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="panel">
+          <div class="sectionTitle"><div><h3>Pendientes en <span id="placeLabel"></span></h3><p class="hint">“Hecho hoy” no desaparece. “Terminado completo” sí.</p></div></div>
+          <div id="taskList" class="tasks"></div>
+        </div>
+        <div class="panel">
+          <div class="sectionTitle"><h3>Historial</h3><button id="clearHistoryBtn" class="btn ghost small" type="button">Limpiar historial</button></div>
+          <div id="historyList" class="history"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL='https://klrrsajryvwjqhffyzvk.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY='sb_publishable_vubLU1yO01pL_xOwGBs53A_BZfNvrjK';
+    const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+    const priorityValue={'Muy baja':1,'Baja':2,'Intermedia':3,'Alta':4,'Muy alta':5};
+    let currentUser=null;
+    let state=null;
+    let saveTimer=null;
+    let booting=true;
+    const $=id=>document.getElementById(id);
+
+    function addMonths(n){const d=new Date(); d.setMonth(d.getMonth()+n); return d.toISOString().slice(0,10)}
+    function makeDefault(){return {places:['En mi casa'],currentPlace:'En mi casa',tasks:[{id:crypto.randomUUID(),name:'Practicar responder exámenes',place:'En mi casa',priority:'Muy alta',deadline:addMonths(2),notes:'Preparar respuestas tipo examen.',doneToday:false,completed:false},{id:crypto.randomUUID(),name:'Estudiar los exámenes',place:'En mi casa',priority:'Alta',deadline:addMonths(3),notes:'Repasar temario y esquemas.',doneToday:false,completed:false}],history:[]}}
+    function daysLeft(date){const a=new Date(); const b=new Date(date+'T00:00:00'); a.setHours(0,0,0,0); return Math.ceil((b-a)/86400000)}
+    function deadlineText(date){const d=daysLeft(date); if(d<0)return 'Vencida'; if(d===0)return 'Hoy'; if(d===1)return 'Mañana'; if(d<31)return d+' días'; const m=Math.round(d/30); return m+' mes'+(m===1?'':'es')}
+    function sortedTasks(){return state.tasks.filter(t=>!t.completed && t.place===state.currentPlace).sort((a,b)=>priorityValue[b.priority]-priorityValue[a.priority] || daysLeft(a.deadline)-daysLeft(b.deadline))}
+    function chipClass(p){return priorityValue[p]>=4?'high':priorityValue[p]===3?'mid':'low'}
+    function esc(s){return String(s||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c))}
+    function addHistory(text){state.history.unshift({text,at:new Date().toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'})}); state.history=state.history.slice(0,60)}
+    function setAuthMsg(msg,error=false){$('authMsg').textContent=msg||'';$('authMsg').classList.toggle('error',!!error)}
+    function setLoginLoading(on){$('loginCard').classList.toggle('loading',!!on)}
+
+    async function loadStateForUser(){
+      if(!currentUser)return;
+      const {data,error}=await supabaseClient.from('organizer_state').select('state').eq('user_id',currentUser.id).maybeSingle();
+      if(error){console.error(error);throw error}
+      if(data?.state){state=data.state}
+      else{
+        state=makeDefault();
+        const {error:insertError}=await supabaseClient.from('organizer_state').insert({user_id:currentUser.id,state});
+        if(insertError){console.error(insertError);throw insertError}
+      }
+      showApp();
+      render(false);
+    }
+
+    async function saveNow(){
+      if(!currentUser||!state||booting)return;
+      const payload={user_id:currentUser.id,state,updated_at:new Date().toISOString()};
+      const {error}=await supabaseClient.from('organizer_state').upsert(payload,{onConflict:'user_id'});
+      if(error){console.error('Error al guardar:',error)}
+    }
+    function queueSave(){
+      if(booting||!currentUser||!state)return;
+      clearTimeout(saveTimer);
+      saveTimer=setTimeout(saveNow,250);
+    }
+
+    function showLogin(){
+      $('mainApp').classList.add('hidden');
+      $('loginScreen').classList.remove('hidden');
+      $('password').value='';
+    }
+    function showApp(){
+      $('loginScreen').classList.add('hidden');
+      $('mainApp').classList.remove('hidden');
+      $('activeAccountTag').textContent='Cuenta: '+(currentUser?.email||'');
+    }
+
+    function render(save=true){
+      if(!state)return;
+      if(!state.places?.length){state.places=['En mi casa']; state.currentPlace='En mi casa'}
+      if(!Array.isArray(state.tasks))state.tasks=[];
+      if(!Array.isArray(state.history))state.history=[];
+      if(!state.places.includes(state.currentPlace)) state.currentPlace=state.places[0];
+      $('activeAccountTag').textContent='Cuenta: '+(currentUser?.email||'');
+      $('currentPlace').innerHTML=state.places.map(p=>`<option ${p===state.currentPlace?'selected':''}>${esc(p)}</option>`).join('');
+      $('taskPlace').innerHTML=state.places.map(p=>`<option ${p===state.currentPlace?'selected':''}>${esc(p)}</option>`).join('');
+      $('placesList').innerHTML=state.places.map(p=>`<div class="placePill">📍 ${esc(p)} <button type="button" data-del-place="${esc(p)}" aria-label="Borrar ${esc(p)}">×</button></div>`).join('');
+      const tasks=sortedTasks(); $('pendingCount').textContent=`${tasks.length} pendiente${tasks.length===1?'':'s'}`; $('placeLabel').textContent=state.currentPlace;
+      const top=tasks.find(t=>!t.doneToday)||tasks[0];
+      $('topTaskBox').innerHTML=top?`<div class="badgeRound">⭐</div><div><h2>${esc(top.name)}</h2><div class="meta"><span class="chip ${chipClass(top.priority)}">${top.priority}</span><span class="chip">⏳ ${deadlineText(top.deadline)}</span><span class="chip">📍 ${esc(top.place)}</span></div><p class="note">${esc(top.notes||'Sin notas')}</p></div><button class="btn primary" type="button" data-done-day="${top.id}">Hecho hoy</button>`:`<div class="empty" style="grid-column:1/-1">No hay tareas pendientes aquí.</div>`;
+      $('taskList').innerHTML=tasks.length?tasks.map(t=>`<article class="task p${priorityValue[t.priority]} ${t.doneToday?'doneToday':''}"><div><p class="name">${esc(t.name)}</p><div class="meta"><span class="chip ${chipClass(t.priority)}">${t.priority}</span><span class="chip">⏳ ${deadlineText(t.deadline)}</span>${t.doneToday?'<span class="chip low">✓ Hecho en el día</span>':''}</div><p class="note">${esc(t.notes||'Sin notas')}</p></div><div class="actions"><button class="btn ghost" type="button" data-done-day="${t.id}">${t.doneToday?'Reabrir hoy':'✓ Hecho hoy'}</button><button class="btn primary" type="button" data-complete="${t.id}">Terminado completo</button></div></article>`).join(''):`<div class="empty">No tienes tareas pendientes en este lugar.</div>`;
+      $('historyList').innerHTML=state.history.length?state.history.map(h=>`<div class="historyItem"><span>${esc(h.text)}</span><span>${esc(h.at)}</span></div>`).join(''):`<div class="empty">Todavía no hay historial.</div>`;
+      if(save)queueSave();
+    }
+
+    async function signIn(email,password){
+      setLoginLoading(true);setAuthMsg('Entrando...');
+      const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error){setLoginLoading(false);setAuthMsg(error.message,true);return}
+      currentUser=data.user;
+      try{await loadStateForUser();setAuthMsg('')}catch(e){showLogin();setAuthMsg('No se pudieron cargar tus datos. Revisa que hayas creado la tabla organizer_state.',true)}
+      setLoginLoading(false);
+    }
+
+    async function signUp(email,password){
+      setLoginLoading(true);setAuthMsg('Creando cuenta...');
+      const {data,error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:window.location.href.split('#')[0]}});
+      setLoginLoading(false);
+      if(error){setAuthMsg(error.message,true);return}
+      if(data.session){currentUser=data.user;await loadStateForUser();setAuthMsg('')}
+      else setAuthMsg('Cuenta creada. Revisa tu correo para confirmar el email y luego inicia sesión.');
+    }
+
+    document.addEventListener('submit',async e=>{
+      e.preventDefault();
+      if(e.target.id==='loginForm'){
+        const email=$('email').value.trim();const password=$('password').value;
+        if(email&&password)await signIn(email,password);
+      }
+      if(e.target.id==='placeForm'){
+        const name=$('placeName').value.trim(); if(!name)return; if(state.places.some(p=>p.toLowerCase()===name.toLowerCase())){$('placeMsg').textContent='Ese lugar ya existe.';return}
+        state.places.push(name); state.currentPlace=name; $('placeName').value=''; $('placeMsg').textContent='Lugar guardado.'; render();
+      }
+      if(e.target.id==='taskForm'){
+        const name=$('taskName').value.trim(); if(!name)return;
+        state.tasks.push({id:crypto.randomUUID(),name,place:$('taskPlace').value,priority:$('taskPriority').value,deadline:$('taskDeadline').value,notes:$('taskNotes').value.trim(),doneToday:false,completed:false});
+        addHistory('Añadida: '+name); e.target.reset(); $('taskDeadline').value=addMonths(1); $('taskMsg').textContent='Tarea añadida.'; render();
+      }
+    });
+
+    $('signupBtn').addEventListener('click',async()=>{
+      const email=$('email').value.trim();const password=$('password').value;
+      if(!email||!password){setAuthMsg('Escribe email y contraseña.',true);return}
+      if(password.length<6){setAuthMsg('La contraseña debe tener al menos 6 caracteres.',true);return}
+      await signUp(email,password);
+    });
+
+    document.addEventListener('change',e=>{if(e.target.id==='currentPlace'){state.currentPlace=e.target.value;render()}});
+    document.addEventListener('click',e=>{
+      const del=e.target.dataset.delPlace, done=e.target.dataset.doneDay, comp=e.target.dataset.complete;
+      if(del){if(state.places.length===1){$('placeMsg').textContent='Debe quedar al menos un lugar.';return} state.places=state.places.filter(p=>p!==del); state.tasks=state.tasks.map(t=>t.place===del?{...t,completed:true}:t); addHistory('Eliminado lugar: '+del); render()}
+      if(done){const t=state.tasks.find(x=>x.id===done); if(t){t.doneToday=!t.doneToday; addHistory((t.doneToday?'Hecho hoy: ':'Reabierto hoy: ')+t.name); render()}}
+      if(comp){const t=state.tasks.find(x=>x.id===comp); if(t){t.completed=true; addHistory('Terminado completo: '+t.name); render()}}
+    });
+
+    $('changeAccountBtn').addEventListener('click',async()=>{
+      await saveNow();
+      await supabaseClient.auth.signOut();
+      currentUser=null;state=null;showLogin();setAuthMsg('Sesión cerrada.');
+    });
+    $('exportBtn').addEventListener('click',()=>{$('backupBox').value=JSON.stringify(state,null,2)});
+    $('importBtn').addEventListener('click',()=>{try{const data=JSON.parse($('backupBox').value); if(!Array.isArray(data.places)||!Array.isArray(data.tasks)) throw new Error(); state=data; render()}catch{$('backupBox').value='Copia no válida'}});
+    $('clearBtn').addEventListener('click',()=>{if(confirm('¿Borrar todos los datos de esta cuenta?')){state=makeDefault();render()}});
+    $('clearHistoryBtn').addEventListener('click',()=>{state.history=[];render()});
+    $('taskDeadline').value=addMonths(1);
+
+    async function boot(){
+      setLoginLoading(true);
+      const {data:{session}}=await supabaseClient.auth.getSession();
+      if(session?.user){
+        currentUser=session.user;
+        try{await loadStateForUser()}catch(e){showLogin();setAuthMsg('No se pudieron cargar tus datos. Revisa la tabla organizer_state en Supabase.',true)}
+      }else showLogin();
+      booting=false;
+      setLoginLoading(false);
+    }
+    boot();
+  </script>
+</body>
+</html>
