@@ -5,15 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mi organizador por lugares</title>
   <style>
-    :root{--bg:#f6f1e8;--card:#fffaf1;--ink:#1f2933;--muted:#7b6f62;--line:#e5d8c8;--accent:#2f6f5e;--accent2:#d58b49;--danger:#b94b4b;--ok:#477c54;--shadow:0 18px 45px rgba(40,32,22,.12);--r:24px}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#faf7f0,#efe6d9);color:var(--ink)}
-    .app{max-width:1120px;margin:0 auto;padding:24px 14px 48px}.panel{background:rgba(255,250,241,.9);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;backdrop-filter:blur(10px)}
-    .loginWrap{min-height:92vh;display:grid;place-items:center;padding:18px}.loginCard{width:min(520px,100%);background:#fffaf1;border:1px solid var(--line);border-radius:34px;box-shadow:0 24px 80px rgba(38,30,18,.18);padding:24px}.loginIcon{width:72px;height:72px;border-radius:24px;background:linear-gradient(135deg,var(--accent),#83b39d);display:grid;place-items:center;color:white;font-size:34px;margin-bottom:14px}.loginCard h1{font-size:clamp(32px,7vw,52px);margin:0;letter-spacing:-.05em}.loginCard p{color:var(--muted);font-weight:700;line-height:1.45}.accountList{display:grid;gap:8px;margin-top:12px}.accountBtn{border:1px solid var(--line);background:#fffdf8;border-radius:18px;padding:12px 14px;text-align:left;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.accountBtn:hover{border-color:var(--accent)}.authActions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.authMsg{min-height:22px;margin-top:10px;font-size:14px;font-weight:800;color:var(--accent)}.authMsg.error{color:var(--danger)}.authNote{font-size:12px!important;font-weight:600!important}.loading{opacity:.65;pointer-events:none}
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:stretch;margin-bottom:16px}.brand{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;border-radius:18px;background:linear-gradient(135deg,var(--accent),#83b39d);display:grid;place-items:center;color:white;font-size:26px;box-shadow:0 10px 25px rgba(47,111,94,.25)}h1{margin:0;font-size:clamp(26px,4vw,44px);letter-spacing:-.04em}.sub{margin:6px 0 0;color:var(--muted);font-size:15px}.accountLine{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.accountTag{background:#eaf3ee;border:1px solid #bdd8c8;color:#245846;border-radius:999px;padding:7px 10px;font-size:13px;font-weight:900}.where{display:flex;flex-direction:column;justify-content:center;gap:10px}.where label{font-size:15px;color:var(--muted);font-weight:700}.selectRow{display:flex;gap:10px;align-items:center}.selectBig{flex:1;min-width:0;border:2px solid #d9cab8;border-radius:999px;background:#fffdf8;padding:15px 18px;font-size:18px;font-weight:800;color:var(--ink);outline:none}.selectBig:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(47,111,94,.12)}
-    .topTask{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;margin:12px 0 16px}.badgeRound{width:72px;height:72px;border-radius:24px;background:#fff3da;border:1px solid #ead8bb;display:grid;place-items:center;font-size:34px}.topTask h2{margin:0;font-size:24px;letter-spacing:-.03em}.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;font-weight:800;font-size:13px;border:1px solid var(--line);background:#fffdf8}.chip.high{background:#ffe7e1;border-color:#ffc3b5;color:#9d3325}.chip.mid{background:#fff4cf;border-color:#e8cc78;color:#7a5813}.chip.low{background:#eaf3ee;border-color:#bcd8c7;color:#245846}.deadline{font-size:13px;color:var(--muted);font-weight:700}.grid{display:grid;grid-template-columns:370px 1fr;gap:16px}.stack{display:grid;gap:16px}.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}h3{margin:0;font-size:18px;letter-spacing:-.02em}.hint{font-size:13px;color:var(--muted)}
-    input,select,textarea{width:100%;border:1.5px solid #dccfbd;border-radius:16px;background:#fffdf8;padding:12px 13px;font-size:16px;color:var(--ink);outline:none}textarea{min-height:74px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(47,111,94,.10)}.formGrid{display:grid;gap:10px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:16px;padding:12px 14px;font-weight:900;font-size:15px;cursor:pointer;background:#eee2d2;color:var(--ink);min-height:44px}.btn.primary{background:var(--accent);color:white}.btn.orange{background:var(--accent2);color:white}.btn.ghost{background:#fffdf8;border:1px solid var(--line)}.btn.danger{background:#ffe9e7;color:var(--danger)}.btn:active{transform:translateY(1px)}
-    .places{display:flex;flex-wrap:wrap;gap:8px}.placePill{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fffdf8;border-radius:999px;padding:8px 10px;font-weight:800}.placePill button{border:0;background:transparent;color:var(--danger);font-weight:900;cursor:pointer}.tasks{display:grid;gap:12px}.task{border:1px solid var(--line);background:#fffdf8;border-radius:22px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px;position:relative;overflow:hidden}.task:before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:#ddd}.task.p5:before{background:#cf4d3f}.task.p4:before{background:#e98b42}.task.p3:before{background:#d7b64a}.task.p2:before{background:#75a883}.task.p1:before{background:#aeb8b1}.task.doneToday{opacity:.72}.task.doneToday .name{text-decoration:line-through}.name{font-size:18px;font-weight:950;margin:0 0 7px;letter-spacing:-.02em}.meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px}.note{color:var(--muted);font-size:14px;margin:0}.actions{display:flex;flex-direction:column;gap:8px;min-width:130px}.empty{border:1px dashed #cdbda8;border-radius:20px;padding:22px;text-align:center;color:var(--muted);background:rgba(255,253,248,.55)}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.small{font-size:13px;padding:9px 11px;border-radius:13px;min-height:38px}.toast{margin-top:10px;color:var(--accent);font-weight:800;font-size:14px;min-height:20px}.count{background:#efe4d5;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;color:#6b5c4c}.history{display:grid;gap:8px}.historyItem{display:flex;justify-content:space-between;gap:12px;background:#fffdf8;border:1px solid var(--line);border-radius:16px;padding:10px 12px;font-size:14px}.historyItem span:last-child{color:var(--muted);white-space:nowrap}.hidden{display:none!important}
-    @media(max-width:850px){.hero,.grid{grid-template-columns:1fr}.topTask{grid-template-columns:58px 1fr}.badgeRound{width:58px;height:58px;border-radius:20px;font-size:28px}.topTask .btn{grid-column:1/-1}.task{grid-template-columns:1fr}.actions{flex-direction:row;flex-wrap:wrap}.actions .btn{flex:1}.two{grid-template-columns:1fr}}
+    :root{
+      --bg-a:#f7f3ff;
+      --bg-b:#fff7fb;
+      --bg-c:#eef8ff;
+      --card:rgba(255,255,255,.84);
+      --card-strong:#ffffff;
+      --ink:#241d42;
+      --muted:#756d96;
+      --line:rgba(110,88,190,.16);
+      --accent:#7257ff;
+      --accent-2:#ff7eb9;
+      --accent-3:#4bc4ff;
+      --accent-4:#7fe7c3;
+      --success:#20b37a;
+      --danger:#eb5a74;
+      --warning:#ffb84d;
+      --shadow:0 24px 70px rgba(79,56,153,.14);
+      --shadow-soft:0 12px 28px rgba(79,56,153,.09);
+      --r:28px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 12% 14%, rgba(114,87,255,.16), transparent 25%),
+        radial-gradient(circle at 88% 12%, rgba(255,126,185,.16), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(75,196,255,.13), transparent 30%),
+        linear-gradient(180deg,var(--bg-a),var(--bg-b) 58%,var(--bg-c));
+      min-height:100vh;
+    }
+    body::before,body::after{
+      content:"";
+      position:fixed;
+      border-radius:50%;
+      pointer-events:none;
+      z-index:0;
+      filter:blur(10px);
+      opacity:.65;
+    }
+    body::before{width:220px;height:220px;background:rgba(255,126,185,.12);top:80px;right:2vw}
+    body::after{width:260px;height:260px;background:rgba(114,87,255,.11);bottom:40px;left:2vw}
+    .hidden{display:none!important}
+    .app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:22px 14px 54px}
+    .panel{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.64);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      padding:18px;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+    .loginWrap{position:relative;z-index:1;min-height:100vh;display:grid;place-items:center;padding:18px}
+    .loginCard{
+      width:min(560px,100%);
+      background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.86));
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:38px;
+      box-shadow:0 35px 90px rgba(70,42,142,.18);
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+    .loginCard::before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(114,87,255,.18),transparent 68%);top:-40px;right:-30px}
+    .loginCard::after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(255,126,185,.18),transparent 68%);bottom:-70px;left:-45px}
+    .loginIcon{width:78px;height:78px;border-radius:26px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:white;font-size:34px;margin-bottom:14px;box-shadow:0 14px 35px rgba(114,87,255,.28);position:relative;z-index:1}
+    .loginCard h1{position:relative;z-index:1;font-size:clamp(34px,7vw,54px);margin:0;letter-spacing:-.06em}
+    .loginCard p{position:relative;z-index:1;color:var(--muted);font-weight:700;line-height:1.5}
+    .accountList{display:grid;gap:9px;margin-top:12px;position:relative;z-index:1}
+    .accountBtn{border:1px solid rgba(114,87,255,.16);background:linear-gradient(180deg,#fff,#faf7ff);border-radius:18px;padding:13px 15px;text-align:left;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--ink);box-shadow:var(--shadow-soft);transition:.18s ease}
+    .accountBtn:hover{transform:translateY(-1px);border-color:rgba(114,87,255,.34)}
+    .topbar{display:grid;grid-template-columns:1.1fr auto;gap:16px;align-items:center;margin-bottom:16px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:58px;height:58px;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:white;font-size:28px;box-shadow:0 14px 34px rgba(114,87,255,.24)}
+    h1{margin:0;font-size:clamp(28px,4vw,46px);letter-spacing:-.05em}
+    .sub{margin:6px 0 0;color:var(--muted);font-size:15px}
+    .accountLine{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .accountTag{background:linear-gradient(135deg,rgba(114,87,255,.14),rgba(255,126,185,.14));border:1px solid rgba(114,87,255,.18);color:#4b3aa8;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:900}
+    .focusGrid{display:grid;grid-template-columns:.88fr 1.12fr;gap:16px;align-items:stretch;margin-bottom:16px}
+    .locationPanel{display:grid;gap:10px;align-content:start;background:linear-gradient(160deg,rgba(255,255,255,.88),rgba(242,249,255,.82))}
+    .locationPanel label{font-size:14px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    .selectBig{width:100%;border:2px solid rgba(114,87,255,.16);border-radius:999px;background:linear-gradient(180deg,#fff,#fbf8ff);padding:15px 18px;font-size:18px;font-weight:900;color:var(--ink);outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.85)}
+    .selectBig:focus{border-color:rgba(114,87,255,.55);box-shadow:0 0 0 5px rgba(114,87,255,.12)}
+    .miniText{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+    .spotlightPanel{background:linear-gradient(160deg,rgba(255,255,255,.88),rgba(255,243,250,.85))}
+    .sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    h2,h3,h4{margin:0;letter-spacing:-.03em}
+    h3{font-size:19px}
+    .hint{font-size:13px;color:var(--muted)}
+    .count{background:linear-gradient(135deg,rgba(114,87,255,.12),rgba(75,196,255,.16));border:1px solid rgba(114,87,255,.14);border-radius:999px;padding:6px 11px;font-size:12px;font-weight:900;color:#5646b8;white-space:nowrap}
+    .topTask{display:grid;grid-template-columns:68px 1fr auto;gap:14px;align-items:center;padding:14px;border-radius:24px;background:linear-gradient(135deg,rgba(114,87,255,.08),rgba(75,196,255,.08),rgba(255,126,185,.09));border:1px solid rgba(114,87,255,.12)}
+    .badgeRound{width:68px;height:68px;border-radius:22px;background:linear-gradient(135deg,#fff0b8,#ffd7e8);display:grid;place-items:center;font-size:32px;box-shadow:var(--shadow-soft)}
+    .topTask h2{font-size:23px}
+    .editorGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-bottom:16px}
+    .addTaskPanel{background:linear-gradient(160deg,rgba(255,255,255,.9),rgba(243,248,255,.86))}
+    .placePanel{background:linear-gradient(160deg,rgba(255,255,255,.9),rgba(250,245,255,.86))}
+    .formGrid{display:grid;gap:10px}
+    .inlineGrid{display:grid;grid-template-columns:1.2fr .9fr .9fr auto;gap:10px;align-items:end}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    input,select,textarea{width:100%;border:1.5px solid rgba(114,87,255,.16);border-radius:16px;background:rgba(255,255,255,.92);padding:12px 13px;font-size:15px;color:var(--ink);outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.85)}
+    textarea{min-height:78px;resize:vertical}
+    input:focus,select:focus,textarea:focus{border-color:rgba(114,87,255,.55);box-shadow:0 0 0 5px rgba(114,87,255,.12)}
+    .fieldBlock{display:grid;gap:7px}
+    .fieldBlock small{font-size:12px;color:var(--muted);font-weight:700}
+    .btn{border:0;border-radius:16px;padding:12px 15px;font-weight:900;font-size:15px;cursor:pointer;background:linear-gradient(180deg,#efe9ff,#e3dcff);color:var(--ink);min-height:44px;box-shadow:0 12px 24px rgba(92,66,175,.12);transition:.18s ease;letter-spacing:-.01em}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),#8c71ff);color:white}
+    .btn.orange{background:linear-gradient(135deg,var(--accent-2),#ff9ec9);color:white}
+    .btn.ghost{background:linear-gradient(180deg,#fff,#faf7ff);border:1px solid rgba(114,87,255,.16)}
+    .btn.danger{background:linear-gradient(180deg,#ffe8ec,#ffd5dc);color:#b43245}
+    .small{font-size:13px;padding:9px 11px;border-radius:14px;min-height:40px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    .toast{margin-top:8px;color:#5746be;font-weight:800;font-size:14px;min-height:18px}
+    .places{display:flex;flex-wrap:wrap;gap:9px;margin-top:10px}
+    .placePill{display:flex;gap:8px;align-items:center;border:1px solid rgba(114,87,255,.16);background:linear-gradient(180deg,#fff,#faf7ff);border-radius:999px;padding:9px 12px;font-weight:900;box-shadow:var(--shadow-soft)}
+    .placePill button{border:0;background:transparent;color:var(--danger);font-weight:900;cursor:pointer}
+    .workspace{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:start}
+    .tasksPanel{background:linear-gradient(160deg,rgba(255,255,255,.92),rgba(244,248,255,.88))}
+    .sideStack{display:grid;gap:16px}
+    .tasks{display:grid;gap:10px}
+    .task{position:relative;overflow:hidden;border:1px solid rgba(114,87,255,.12);background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(251,249,255,.95));border-radius:20px;padding:11px 13px 10px 15px;display:grid;grid-template-columns:1fr auto;gap:12px;box-shadow:var(--shadow-soft)}
+    .task::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:linear-gradient(180deg,#cfd2ff,#aab2ff)}
+    .task::after{content:"";position:absolute;right:-14px;top:-18px;width:84px;height:84px;border-radius:50%;background:radial-gradient(circle,rgba(114,87,255,.08),transparent 72%)}
+    .task.p5{background:linear-gradient(180deg,#fff4f7,#fffafb)} .task.p5::before{background:linear-gradient(180deg,#ff7c99,#ef5d6a)}
+    .task.p4{background:linear-gradient(180deg,#fff7f0,#fffdfb)} .task.p4::before{background:linear-gradient(180deg,#ffb24c,#ff8b5d)}
+    .task.p3{background:linear-gradient(180deg,#fffbe9,#fffef7)} .task.p3::before{background:linear-gradient(180deg,#ffd96a,#ffbf2f)}
+    .task.p2{background:linear-gradient(180deg,#f0fff7,#fbfffd)} .task.p2::before{background:linear-gradient(180deg,#58d68d,#24b47e)}
+    .task.p1{background:linear-gradient(180deg,#eef9ff,#f9fdff)} .task.p1::before{background:linear-gradient(180deg,#74d3ff,#46c0ff)}
+    .task.p0{background:linear-gradient(180deg,#f7f2ff,#fcfaff)} .task.p0::before{background:linear-gradient(180deg,#b58cff,#8d7cff)}
+    .task.doneToday{opacity:.86}
+    .task.doneToday .name{text-decoration:line-through}
+    .name{font-size:17px;font-weight:950;margin:0 0 6px;letter-spacing:-.02em}
+    .meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:7px}
+    .chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px;border:1px solid transparent;background:#fff;box-shadow:0 5px 14px rgba(72,46,138,.08)}
+    .chip.high{background:#ffe6ef;border-color:#ffc8dc;color:#a93a70}
+    .chip.mid{background:#fff3d6;border-color:#ffd78b;color:#9b6406}
+    .chip.low{background:#e4f8ee;border-color:#b6e6cf;color:#177854}
+    .chip.soft{background:#f1edff;border-color:#d9d0ff;color:#5e50b9}
+    .chip.ghosty{background:#eef8ff;border-color:#c6ebff;color:#2778a4}
+    .note{color:var(--muted);font-size:13px;margin:0;line-height:1.42}
+    .actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;align-content:flex-start;min-width:190px}
+    .actions .btn{flex:1}
+    .empty{border:1px dashed rgba(114,87,255,.22);border-radius:22px;padding:22px;text-align:center;color:var(--muted);background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(247,243,255,.72))}
+    .history{display:grid;gap:9px}
+    .historyItem{display:flex;justify-content:space-between;gap:12px;background:linear-gradient(180deg,#fff,#faf7ff);border:1px solid rgba(114,87,255,.12);border-radius:16px;padding:11px 13px;font-size:14px;box-shadow:var(--shadow-soft)}
+    .historyItem span:last-child{color:var(--muted);white-space:nowrap}
+
+    .newFlow{grid-template-columns:minmax(0,1.35fr) minmax(310px,.65fr)}
+    .compactPanel{padding:16px;border-radius:24px;box-shadow:var(--shadow-soft)}
+    .compactForm{gap:8px}
+    .compactForm textarea{min-height:58px}
+    .backupPanel textarea{min-height:88px}
+    .historyPanel .history{max-height:none}
+    .task.p0 .meta{margin-bottom:0}
+    .task.p0 .note:empty{display:none}
+
+    @media(max-width:980px){
+      .topbar,.focusGrid,.editorGrid,.workspace{grid-template-columns:1fr}
+      .accountLine{justify-content:flex-start}
+      .topTask{grid-template-columns:58px 1fr}
+      .topTask .btn{grid-column:1/-1}
+      .badgeRound{width:58px;height:58px;border-radius:20px;font-size:28px}
+      .inlineGrid{grid-template-columns:1fr}
+      .actions{min-width:0;justify-content:stretch}
+      .actions .btn{min-width:140px}
+    }
+    @media(max-width:720px){
+      .task{grid-template-columns:1fr}
+      .two{grid-template-columns:1fr}
+      .toolbar{flex-direction:column}
+      .toolbar .btn{width:100%}
+      .actions .btn{width:100%}
+    }
+
+    .authActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
+    .authMsg{position:relative;z-index:1;min-height:22px;margin-top:10px;font-size:14px;font-weight:800;color:var(--accent)}
+    .authMsg.error{color:var(--danger)}
+    .authNote{font-size:12px!important;font-weight:600!important}
+    .loading{opacity:.65;pointer-events:none}
   </style>
 </head>
 <body>
@@ -36,67 +210,92 @@
   </section>
 
   <main id="mainApp" class="app hidden">
-    <section class="hero">
-      <div class="panel">
-        <div class="brand"><div class="logo">📍</div><div><h1>Mi organizador</h1><p class="sub">Eliges dónde estás y te ordena qué hacer primero.</p></div></div>
-        <div class="accountLine"><span id="activeAccountTag" class="accountTag"></span><button id="changeAccountBtn" class="btn ghost small" type="button">Cerrar sesión</button></div>
-      </div>
-      <div class="panel where">
-        <label for="currentPlace">¿Dónde te encuentras?</label>
-        <div class="selectRow"><select id="currentPlace" class="selectBig"></select></div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="sectionTitle"><div><h3>Lo más importante ahora</h3><p class="hint">Primero manda la importancia; después, el menor tiempo restante.</p></div><span id="pendingCount" class="count">0 pendientes</span></div>
-      <div id="topTaskBox" class="topTask"></div>
-    </section>
-
-    <section class="grid" style="margin-top:16px">
-      <div class="stack">
-        <div class="panel">
-          <div class="sectionTitle"><h3>Guardar lugares</h3><span class="hint">Casa, uni, biblioteca...</span></div>
-          <form id="placeForm" class="formGrid">
-            <input id="placeName" placeholder="Nuevo lugar" />
-            <button class="btn primary" type="submit">Guardar lugar</button>
-          </form>
-          <div id="placeMsg" class="toast"></div>
-          <div id="placesList" class="places"></div>
+    <section class="topbar panel">
+      <div class="brand">
+        <div class="logo">📍</div>
+        <div>
+          <h1>Mi organizador</h1>
+          <p class="sub">Te dice qué hacer primero según dónde estás.</p>
         </div>
+      </div>
+      <div class="accountLine">
+        <span id="activeAccountTag" class="accountTag"></span>
+        <button id="changeAccountBtn" class="btn ghost small" type="button">Cerrar sesión</button>
+      </div>
+    </section>
 
-        <div class="panel">
-          <div class="sectionTitle"><h3>Añadir cosa que puedes hacer</h3></div>
-          <form id="taskForm" class="formGrid">
-            <input id="taskName" placeholder="Ej: Practicar responder exámenes" required />
+    <section class="focusGrid">
+      <div class="panel locationPanel">
+        <label for="currentPlace">¿Dónde te encuentras?</label>
+        <select id="currentPlace" class="selectBig"></select>
+        <p class="miniText">Elige un lugar y te ordeno las tareas de ese sitio.</p>
+      </div>
+      <div class="panel spotlightPanel">
+        <div class="sectionTitle">
+          <div>
+            <h3>Empieza por esto</h3>
+            <p class="hint">Primero importancia; después, lo que vence antes.</p>
+          </div>
+          <span id="pendingCount" class="count">0 pendientes</span>
+        </div>
+        <div id="topTaskBox" class="topTask"></div>
+      </div>
+    </section>
+
+    <section class="workspace newFlow">
+      <div class="panel tasksPanel">
+        <div class="sectionTitle">
+          <div>
+            <h3>Pendientes en <span id="placeLabel"></span></h3>
+            <p class="hint">Aquí va lo importante. Añadir tareas queda a un lado, no encima.</p>
+          </div>
+        </div>
+        <div id="taskList" class="tasks"></div>
+      </div>
+
+      <div class="sideStack">
+        <div class="panel addTaskPanel compactPanel">
+          <div class="sectionTitle"><h3>+ Nueva tarea</h3><span class="hint">Cuando quieras añadir algo</span></div>
+          <form id="taskForm" class="formGrid compactForm">
+            <input id="taskName" placeholder="Ej: Estudiar tema 3" required />
+            <select id="taskPlace"></select>
             <div class="two">
-              <select id="taskPlace"></select>
               <select id="taskPriority">
-                <option>Muy alta</option><option>Alta</option><option>Intermedia</option><option>Baja</option><option>Muy baja</option>
+                <option value="">Importancia</option><option>Muy alta</option><option>Alta</option><option>Intermedia</option><option>Baja</option><option>Muy baja</option>
               </select>
+              <input id="taskDeadline" type="date" />
             </div>
-            <label class="hint" for="taskDeadline">¿Hasta cuándo tienes para hacerlo?</label>
-            <input id="taskDeadline" type="date" required />
             <textarea id="taskNotes" placeholder="Notas opcionales"></textarea>
             <button class="btn orange" type="submit">Añadir tarea</button>
           </form>
           <div id="taskMsg" class="toast"></div>
         </div>
 
-        <div class="panel">
-          <div class="sectionTitle"><h3>Copia de seguridad</h3></div>
-          <textarea id="backupBox" placeholder="Aquí aparece tu copia de seguridad"></textarea>
-          <div class="toolbar"><button id="exportBtn" class="btn ghost small" type="button">Exportar</button><button id="importBtn" class="btn ghost small" type="button">Importar</button><button id="clearBtn" class="btn danger small" type="button">Borrar todo</button></div>
+        <div class="panel placePanel compactPanel">
+          <div class="sectionTitle"><h3>Lugares</h3><span class="hint">Casa, uni...</span></div>
+          <form id="placeForm" class="formGrid compactForm">
+            <div class="inlineGrid" style="grid-template-columns:1fr auto;">
+              <input id="placeName" placeholder="Nuevo lugar" />
+              <button class="btn primary" type="submit">Guardar</button>
+            </div>
+          </form>
+          <div id="placeMsg" class="toast"></div>
+          <div id="placesList" class="places"></div>
         </div>
-      </div>
 
-      <div class="stack">
-        <div class="panel">
-          <div class="sectionTitle"><div><h3>Pendientes en <span id="placeLabel"></span></h3><p class="hint">“Hecho hoy” no desaparece. “Terminado completo” sí.</p></div></div>
-          <div id="taskList" class="tasks"></div>
-        </div>
-        <div class="panel">
-          <div class="sectionTitle"><h3>Historial</h3><button id="clearHistoryBtn" class="btn ghost small" type="button">Limpiar historial</button></div>
+        <div class="panel historyPanel compactPanel">
+          <div class="sectionTitle"><h3>Historial</h3><button id="clearHistoryBtn" class="btn ghost small" type="button">Limpiar</button></div>
           <div id="historyList" class="history"></div>
+        </div>
+
+        <div class="panel backupPanel compactPanel">
+          <div class="sectionTitle"><h3>Copia</h3></div>
+          <textarea id="backupBox" placeholder="Aquí aparece tu copia de seguridad"></textarea>
+          <div class="toolbar">
+            <button id="exportBtn" class="btn ghost small" type="button">Exportar</button>
+            <button id="importBtn" class="btn ghost small" type="button">Importar</button>
+            <button id="clearBtn" class="btn danger small" type="button">Borrar todo</button>
+          </div>
         </div>
       </div>
     </section>
@@ -107,49 +306,149 @@
     const SUPABASE_URL='https://lcmcipyqkoaxhebawzuf.supabase.co';
     const SUPABASE_PUBLISHABLE_KEY='sb_publishable_PcrLoljij4huD18pINmp2Q_DCJIITi2';
     const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+
     const priorityValue={'Muy baja':1,'Baja':2,'Intermedia':3,'Alta':4,'Muy alta':5};
     let currentUser=null;
     let state=null;
     let saveTimer=null;
-    let booting=true;
+    let midnightTimer=null;
+    let readyForSave=false;
     const $=id=>document.getElementById(id);
 
-    function addMonths(n){const d=new Date(); d.setMonth(d.getMonth()+n); return d.toISOString().slice(0,10)}
-    function makeDefault(){return {places:['En mi casa'],currentPlace:'En mi casa',tasks:[{id:crypto.randomUUID(),name:'Practicar responder exámenes',place:'En mi casa',priority:'Muy alta',deadline:addMonths(2),notes:'Preparar respuestas tipo examen.',doneToday:false,completed:false},{id:crypto.randomUUID(),name:'Estudiar los exámenes',place:'En mi casa',priority:'Alta',deadline:addMonths(3),notes:'Repasar temario y esquemas.',doneToday:false,completed:false}],history:[]}}
-    function daysLeft(date){const a=new Date(); const b=new Date(date+'T00:00:00'); a.setHours(0,0,0,0); return Math.ceil((b-a)/86400000)}
-    function deadlineText(date){const d=daysLeft(date); if(d<0)return 'Vencida'; if(d===0)return 'Hoy'; if(d===1)return 'Mañana'; if(d<31)return d+' días'; const m=Math.round(d/30); return m+' mes'+(m===1?'':'es')}
-    function sortedTasks(){return state.tasks.filter(t=>!t.completed && t.place===state.currentPlace).sort((a,b)=>priorityValue[b.priority]-priorityValue[a.priority] || daysLeft(a.deadline)-daysLeft(b.deadline))}
-    function chipClass(p){return priorityValue[p]>=4?'high':priorityValue[p]===3?'mid':'low'}
-    function esc(s){return String(s||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c))}
-    function addHistory(text){state.history.unshift({text,at:new Date().toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'})}); state.history=state.history.slice(0,60)}
-    function setAuthMsg(msg,error=false){$('authMsg').textContent=msg||'';$('authMsg').classList.toggle('error',!!error)}
+    function todayKey(){
+      const d=new Date();
+      const y=d.getFullYear();
+      const m=String(d.getMonth()+1).padStart(2,'0');
+      const day=String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function addMonths(n){
+      const d=new Date();
+      d.setMonth(d.getMonth()+n);
+      return d.toISOString().slice(0,10);
+    }
+
+    function makeDefault(){
+      return {
+        places:['En mi casa'],
+        currentPlace:'En mi casa',
+        tasks:[
+          {id:crypto.randomUUID(),name:'Practicar responder exámenes',place:'En mi casa',priority:'Muy alta',deadline:addMonths(2),notes:'Preparar respuestas tipo examen.',doneToday:false,doneTodayDate:null,completed:false,createdAt:new Date().toISOString()},
+          {id:crypto.randomUUID(),name:'Estudiar los exámenes',place:'En mi casa',priority:'Alta',deadline:addMonths(3),notes:'Repasar temario y esquemas.',doneToday:false,doneTodayDate:null,completed:false,createdAt:new Date().toISOString()}
+        ],
+        history:[]
+      };
+    }
+
+    function normalizeState(value){
+      const s=(value && typeof value==='object') ? value : makeDefault();
+      if(!Array.isArray(s.places)||!s.places.length)s.places=['En mi casa'];
+      if(!s.currentPlace||!s.places.includes(s.currentPlace))s.currentPlace=s.places[0];
+      if(!Array.isArray(s.tasks))s.tasks=[];
+      if(!Array.isArray(s.history))s.history=[];
+      s.tasks=s.tasks.map(t=>({
+        id:t.id||crypto.randomUUID(),
+        name:t.name||'Tarea',
+        place:t.place||s.currentPlace,
+        priority:t.priority||'',
+        deadline:t.deadline||'',
+        notes:t.notes||'',
+        doneToday:!!t.doneToday,
+        doneTodayDate:t.doneTodayDate||null,
+        completed:!!t.completed,
+        createdAt:t.createdAt||''
+      }));
+      return s;
+    }
+
+    function resetDoneTodayIfNeeded(){
+      if(!state||!Array.isArray(state.tasks))return false;
+      const today=todayKey();
+      let changed=false;
+      state.tasks.forEach(t=>{
+        if(t.doneToday && t.doneTodayDate!==today){
+          t.doneToday=false;
+          t.doneTodayDate=null;
+          changed=true;
+        }
+      });
+      return changed;
+    }
+
+    function scheduleMidnightReset(){
+      clearTimeout(midnightTimer);
+      const now=new Date();
+      const next=new Date(now);
+      next.setHours(24,0,1,0);
+      midnightTimer=setTimeout(()=>{
+        if(state){
+          resetDoneTodayIfNeeded();
+          render();
+        }
+        scheduleMidnightReset();
+      },Math.max(1000,next-now));
+    }
+
+    function hasPriority(t){return !!t.priority && !!priorityValue[t.priority]}
+    function hasDeadline(t){return !!t.deadline}
+    function daysLeft(date){
+      if(!date)return 999999;
+      const a=new Date();
+      const b=new Date(date+'T00:00:00');
+      a.setHours(0,0,0,0);
+      return Math.ceil((b-a)/86400000);
+    }
+    function deadlineText(date){
+      if(!date)return '';
+      const d=daysLeft(date);
+      if(d<0)return 'Vencida';
+      if(d===0)return 'Hoy';
+      if(d===1)return 'Mañana';
+      if(d<31)return d+' días';
+      const m=Math.round(d/30);
+      return m+' mes'+(m===1?'':'es');
+    }
+    function groupRank(t){
+      if(hasPriority(t)&&hasDeadline(t))return 0;
+      if(hasPriority(t))return 1;
+      if(hasDeadline(t))return 2;
+      return 3;
+    }
+    function sortedTasks(){
+      return state.tasks
+        .filter(t=>!t.completed && t.place===state.currentPlace)
+        .sort((a,b)=>
+          groupRank(a)-groupRank(b) ||
+          ((priorityValue[b.priority]||0)-(priorityValue[a.priority]||0)) ||
+          daysLeft(a.deadline)-daysLeft(b.deadline) ||
+          ((a.createdAt||'').localeCompare(b.createdAt||''))
+        );
+    }
+    function chipClass(p){return (priorityValue[p]||0)>=4?'high':(priorityValue[p]||0)===3?'mid':'low'}
+    function priorityText(p){return p||''}
+    function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+    function metaHtml(t,includePlace=false){
+      const parts=[];
+      if(t.priority)parts.push(`<span class="chip ${chipClass(t.priority)}">${priorityText(t.priority)}</span>`);
+      if(t.deadline)parts.push(`<span class="chip ghosty">⏳ ${deadlineText(t.deadline)}</span>`);
+      if(includePlace)parts.push(`<span class="chip soft">📍 ${esc(t.place)}</span>`);
+      if(t.doneToday)parts.push('<span class="chip low">✓ Hecho hoy</span>');
+      if(!parts.length)parts.push('<span class="chip soft">Sin programar</span>');
+      return `<div class="meta">${parts.join('')}</div>`;
+    }
+    function noteHtml(t){return t.notes?`<p class="note">${esc(t.notes)}</p>`:''}
+    function taskBarClass(t){return priorityValue[t.priority]||0}
+    function addHistory(text){
+      state.history.unshift({text,at:new Date().toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'})});
+      state.history=state.history.slice(0,60);
+    }
+
+    function setAuthMsg(msg,error=false){
+      $('authMsg').textContent=msg||'';
+      $('authMsg').classList.toggle('error',!!error);
+    }
     function setLoginLoading(on){$('loginCard').classList.toggle('loading',!!on)}
-
-    async function loadStateForUser(){
-      if(!currentUser)return;
-      const {data,error}=await supabaseClient.from('organizer_state').select('state').eq('user_id',currentUser.id).maybeSingle();
-      if(error){console.error(error);throw error}
-      if(data?.state){state=data.state}
-      else{
-        state=makeDefault();
-        const {error:insertError}=await supabaseClient.from('organizer_state').insert({user_id:currentUser.id,state});
-        if(insertError){console.error(insertError);throw insertError}
-      }
-      showApp();
-      render(false);
-    }
-
-    async function saveNow(){
-      if(!currentUser||!state||booting)return;
-      const payload={user_id:currentUser.id,state,updated_at:new Date().toISOString()};
-      const {error}=await supabaseClient.from('organizer_state').upsert(payload,{onConflict:'user_id'});
-      if(error){console.error('Error al guardar:',error)}
-    }
-    function queueSave(){
-      if(booting||!currentUser||!state)return;
-      clearTimeout(saveTimer);
-      saveTimer=setTimeout(saveNow,250);
-    }
 
     function showLogin(){
       $('mainApp').classList.add('hidden');
@@ -162,95 +461,293 @@
       $('activeAccountTag').textContent='Cuenta: '+(currentUser?.email||'');
     }
 
+    async function loadStateForUser(){
+      if(!currentUser)return;
+      readyForSave=false;
+      const {data,error}=await supabaseClient
+        .from('organizer_state')
+        .select('state')
+        .eq('user_id',currentUser.id)
+        .maybeSingle();
+
+      if(error){console.error(error);throw error}
+
+      if(data?.state){
+        state=normalizeState(data.state);
+      }else{
+        state=makeDefault();
+        const {error:insertError}=await supabaseClient
+          .from('organizer_state')
+          .insert({user_id:currentUser.id,state});
+        if(insertError){console.error(insertError);throw insertError}
+      }
+
+      const resetChanged=resetDoneTodayIfNeeded();
+      showApp();
+      render(false);
+      readyForSave=true;
+      if(resetChanged)await saveNow();
+      scheduleMidnightReset();
+    }
+
+    async function saveNow(){
+      if(!readyForSave||!currentUser||!state)return;
+      const payload={
+        user_id:currentUser.id,
+        state,
+        updated_at:new Date().toISOString()
+      };
+      const {error}=await supabaseClient
+        .from('organizer_state')
+        .upsert(payload,{onConflict:'user_id'});
+      if(error){
+        console.error('Error al guardar:',error);
+        $('taskMsg').textContent='No se pudo guardar online. Revisa la conexión.';
+      }
+    }
+
+    function queueSave(){
+      if(!readyForSave||!currentUser||!state)return;
+      clearTimeout(saveTimer);
+      saveTimer=setTimeout(saveNow,250);
+    }
+
     function render(save=true){
       if(!state)return;
-      if(!state.places?.length){state.places=['En mi casa']; state.currentPlace='En mi casa'}
-      if(!Array.isArray(state.tasks))state.tasks=[];
-      if(!Array.isArray(state.history))state.history=[];
-      if(!state.places.includes(state.currentPlace)) state.currentPlace=state.places[0];
+      state=normalizeState(state);
+      const resetChanged=resetDoneTodayIfNeeded();
+
       $('activeAccountTag').textContent='Cuenta: '+(currentUser?.email||'');
       $('currentPlace').innerHTML=state.places.map(p=>`<option ${p===state.currentPlace?'selected':''}>${esc(p)}</option>`).join('');
       $('taskPlace').innerHTML=state.places.map(p=>`<option ${p===state.currentPlace?'selected':''}>${esc(p)}</option>`).join('');
       $('placesList').innerHTML=state.places.map(p=>`<div class="placePill">📍 ${esc(p)} <button type="button" data-del-place="${esc(p)}" aria-label="Borrar ${esc(p)}">×</button></div>`).join('');
-      const tasks=sortedTasks(); $('pendingCount').textContent=`${tasks.length} pendiente${tasks.length===1?'':'s'}`; $('placeLabel').textContent=state.currentPlace;
+
+      const tasks=sortedTasks();
+      $('pendingCount').textContent=`${tasks.length} pendiente${tasks.length===1?'':'s'}`;
+      $('placeLabel').textContent=state.currentPlace;
+
       const top=tasks.find(t=>!t.doneToday)||tasks[0];
-      $('topTaskBox').innerHTML=top?`<div class="badgeRound">⭐</div><div><h2>${esc(top.name)}</h2><div class="meta"><span class="chip ${chipClass(top.priority)}">${top.priority}</span><span class="chip">⏳ ${deadlineText(top.deadline)}</span><span class="chip">📍 ${esc(top.place)}</span></div><p class="note">${esc(top.notes||'Sin notas')}</p></div><button class="btn primary" type="button" data-done-day="${top.id}">Hecho hoy</button>`:`<div class="empty" style="grid-column:1/-1">No hay tareas pendientes aquí.</div>`;
-      $('taskList').innerHTML=tasks.length?tasks.map(t=>`<article class="task p${priorityValue[t.priority]} ${t.doneToday?'doneToday':''}"><div><p class="name">${esc(t.name)}</p><div class="meta"><span class="chip ${chipClass(t.priority)}">${t.priority}</span><span class="chip">⏳ ${deadlineText(t.deadline)}</span>${t.doneToday?'<span class="chip low">✓ Hecho en el día</span>':''}</div><p class="note">${esc(t.notes||'Sin notas')}</p></div><div class="actions"><button class="btn ghost" type="button" data-done-day="${t.id}">${t.doneToday?'Reabrir hoy':'✓ Hecho hoy'}</button><button class="btn primary" type="button" data-complete="${t.id}">Terminado completo</button></div></article>`).join(''):`<div class="empty">No tienes tareas pendientes en este lugar.</div>`;
-      $('historyList').innerHTML=state.history.length?state.history.map(h=>`<div class="historyItem"><span>${esc(h.text)}</span><span>${esc(h.at)}</span></div>`).join(''):`<div class="empty">Todavía no hay historial.</div>`;
-      if(save)queueSave();
+      $('topTaskBox').innerHTML=top
+        ? `<div class="badgeRound">⭐</div><div><h2>${esc(top.name)}</h2>${metaHtml(top,true)}${noteHtml(top)}</div><button class="btn primary" type="button" data-done-day="${top.id}">${top.doneToday?'Reabrir hoy':'Hecho hoy'}</button>`
+        : `<div class="empty" style="grid-column:1/-1">No hay tareas pendientes aquí.</div>`;
+
+      $('taskList').innerHTML=tasks.length
+        ? tasks.map(t=>`<article class="task p${taskBarClass(t)} ${t.doneToday?'doneToday':''}"><div><p class="name">${esc(t.name)}</p>${metaHtml(t,false)}${noteHtml(t)}</div><div class="actions"><button class="btn ghost" type="button" data-done-day="${t.id}">${t.doneToday?'Reabrir hoy':'✓ Hecho hoy'}</button><button class="btn primary" type="button" data-complete="${t.id}">✓ Terminado</button></div></article>`).join('')
+        : `<div class="empty">No tienes tareas pendientes en este lugar.</div>`;
+
+      $('historyList').innerHTML=state.history.length
+        ? state.history.map(h=>`<div class="historyItem"><span>${esc(h.text)}</span><span>${esc(h.at)}</span></div>`).join('')
+        : `<div class="empty">Todavía no hay historial.</div>`;
+
+      if(save||resetChanged)queueSave();
     }
 
     async function signIn(email,password){
-      setLoginLoading(true);setAuthMsg('Entrando...');
+      setLoginLoading(true);
+      setAuthMsg('Entrando...');
       const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-      if(error){setLoginLoading(false);setAuthMsg(error.message,true);return}
+      if(error){
+        setLoginLoading(false);
+        setAuthMsg(error.message,true);
+        return;
+      }
       currentUser=data.user;
-      try{await loadStateForUser();setAuthMsg('')}catch(e){showLogin();setAuthMsg('No se pudieron cargar tus datos. Revisa que hayas creado la tabla organizer_state.',true)}
+      try{
+        await loadStateForUser();
+        setAuthMsg('');
+      }catch(e){
+        showLogin();
+        setAuthMsg('No se pudieron cargar tus datos. Revisa la tabla organizer_state en Supabase.',true);
+      }
       setLoginLoading(false);
     }
 
     async function signUp(email,password){
-      setLoginLoading(true);setAuthMsg('Creando cuenta...');
-      const {data,error}=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:window.location.href.split('#')[0]}});
+      setLoginLoading(true);
+      setAuthMsg('Creando cuenta...');
+      const {data,error}=await supabaseClient.auth.signUp({
+        email,
+        password,
+        options:{emailRedirectTo:window.location.href.split('#')[0]}
+      });
       setLoginLoading(false);
-      if(error){setAuthMsg(error.message,true);return}
-      if(data.session){currentUser=data.user;await loadStateForUser();setAuthMsg('')}
-      else setAuthMsg('Cuenta creada. Revisa tu correo para confirmar el email y luego inicia sesión.');
+      if(error){
+        setAuthMsg(error.message,true);
+        return;
+      }
+      if(data.session){
+        currentUser=data.user;
+        await loadStateForUser();
+        setAuthMsg('');
+      }else{
+        setAuthMsg('Cuenta creada. Revisa tu correo para confirmar el email y luego inicia sesión.');
+      }
     }
 
     document.addEventListener('submit',async e=>{
       e.preventDefault();
+
       if(e.target.id==='loginForm'){
-        const email=$('email').value.trim();const password=$('password').value;
+        const email=$('email').value.trim();
+        const password=$('password').value;
         if(email&&password)await signIn(email,password);
+        return;
       }
+
       if(e.target.id==='placeForm'){
-        const name=$('placeName').value.trim(); if(!name)return; if(state.places.some(p=>p.toLowerCase()===name.toLowerCase())){$('placeMsg').textContent='Ese lugar ya existe.';return}
-        state.places.push(name); state.currentPlace=name; $('placeName').value=''; $('placeMsg').textContent='Lugar guardado.'; render();
+        const name=$('placeName').value.trim();
+        if(!name)return;
+        if(state.places.some(p=>p.toLowerCase()===name.toLowerCase())){
+          $('placeMsg').textContent='Ese lugar ya existe.';
+          return;
+        }
+        state.places.push(name);
+        state.currentPlace=name;
+        $('placeName').value='';
+        $('placeMsg').textContent='Lugar guardado.';
+        render();
+        return;
       }
+
       if(e.target.id==='taskForm'){
-        const name=$('taskName').value.trim(); if(!name)return;
-        state.tasks.push({id:crypto.randomUUID(),name,place:$('taskPlace').value,priority:$('taskPriority').value,deadline:$('taskDeadline').value,notes:$('taskNotes').value.trim(),doneToday:false,completed:false});
-        addHistory('Añadida: '+name); e.target.reset(); $('taskDeadline').value=addMonths(1); $('taskMsg').textContent='Tarea añadida.'; render();
+        const name=$('taskName').value.trim();
+        if(!name)return;
+        state.tasks.push({
+          id:crypto.randomUUID(),
+          name,
+          place:$('taskPlace').value,
+          priority:$('taskPriority').value,
+          deadline:$('taskDeadline').value,
+          notes:$('taskNotes').value.trim(),
+          doneToday:false,
+          doneTodayDate:null,
+          completed:false,
+          createdAt:new Date().toISOString()
+        });
+        addHistory('Añadida: '+name);
+        e.target.reset();
+        $('taskPriority').value='';
+        $('taskDeadline').value='';
+        $('taskMsg').textContent='Tarea añadida.';
+        render();
       }
     });
 
     $('signupBtn').addEventListener('click',async()=>{
-      const email=$('email').value.trim();const password=$('password').value;
-      if(!email||!password){setAuthMsg('Escribe email y contraseña.',true);return}
-      if(password.length<6){setAuthMsg('La contraseña debe tener al menos 6 caracteres.',true);return}
+      const email=$('email').value.trim();
+      const password=$('password').value;
+      if(!email||!password){
+        setAuthMsg('Escribe email y contraseña.',true);
+        return;
+      }
+      if(password.length<6){
+        setAuthMsg('La contraseña debe tener al menos 6 caracteres.',true);
+        return;
+      }
       await signUp(email,password);
     });
 
-    document.addEventListener('change',e=>{if(e.target.id==='currentPlace'){state.currentPlace=e.target.value;render()}});
+    document.addEventListener('change',e=>{
+      if(e.target.id==='currentPlace'){
+        state.currentPlace=e.target.value;
+        render();
+      }
+    });
+
     document.addEventListener('click',e=>{
-      const del=e.target.dataset.delPlace, done=e.target.dataset.doneDay, comp=e.target.dataset.complete;
-      if(del){if(state.places.length===1){$('placeMsg').textContent='Debe quedar al menos un lugar.';return} state.places=state.places.filter(p=>p!==del); state.tasks=state.tasks.map(t=>t.place===del?{...t,completed:true}:t); addHistory('Eliminado lugar: '+del); render()}
-      if(done){const t=state.tasks.find(x=>x.id===done); if(t){t.doneToday=!t.doneToday; addHistory((t.doneToday?'Hecho hoy: ':'Reabierto hoy: ')+t.name); render()}}
-      if(comp){const t=state.tasks.find(x=>x.id===comp); if(t){t.completed=true; addHistory('Terminado completo: '+t.name); render()}}
+      const del=e.target.dataset.delPlace;
+      const done=e.target.dataset.doneDay;
+      const comp=e.target.dataset.complete;
+
+      if(del){
+        if(state.places.length===1){
+          $('placeMsg').textContent='Debe quedar al menos un lugar.';
+          return;
+        }
+        state.places=state.places.filter(p=>p!==del);
+        state.tasks=state.tasks.map(t=>t.place===del?{...t,completed:true}:t);
+        addHistory('Eliminado lugar: '+del);
+        render();
+      }
+
+      if(done){
+        const t=state.tasks.find(x=>x.id===done);
+        if(t){
+          t.doneToday=!t.doneToday;
+          t.doneTodayDate=t.doneToday?todayKey():null;
+          addHistory((t.doneToday?'Hecho hoy: ':'Reabierto hoy: ')+t.name);
+          render();
+        }
+      }
+
+      if(comp){
+        const t=state.tasks.find(x=>x.id===comp);
+        if(t){
+          t.completed=true;
+          addHistory('Terminado completo: '+t.name);
+          render();
+        }
+      }
     });
 
     $('changeAccountBtn').addEventListener('click',async()=>{
       await saveNow();
       await supabaseClient.auth.signOut();
-      currentUser=null;state=null;showLogin();setAuthMsg('Sesión cerrada.');
+      clearTimeout(midnightTimer);
+      currentUser=null;
+      state=null;
+      readyForSave=false;
+      showLogin();
+      setAuthMsg('Sesión cerrada.');
     });
-    $('exportBtn').addEventListener('click',()=>{$('backupBox').value=JSON.stringify(state,null,2)});
-    $('importBtn').addEventListener('click',()=>{try{const data=JSON.parse($('backupBox').value); if(!Array.isArray(data.places)||!Array.isArray(data.tasks)) throw new Error(); state=data; render()}catch{$('backupBox').value='Copia no válida'}});
-    $('clearBtn').addEventListener('click',()=>{if(confirm('¿Borrar todos los datos de esta cuenta?')){state=makeDefault();render()}});
-    $('clearHistoryBtn').addEventListener('click',()=>{state.history=[];render()});
-    $('taskDeadline').value=addMonths(1);
+
+    $('exportBtn').addEventListener('click',()=>{
+      $('backupBox').value=JSON.stringify(state,null,2);
+    });
+
+    $('importBtn').addEventListener('click',()=>{
+      try{
+        const data=JSON.parse($('backupBox').value);
+        if(!Array.isArray(data.places)||!Array.isArray(data.tasks))throw new Error();
+        state=normalizeState(data);
+        render();
+      }catch{
+        $('backupBox').value='Copia no válida';
+      }
+    });
+
+    $('clearBtn').addEventListener('click',()=>{
+      if(confirm('¿Borrar todos los datos de esta cuenta?')){
+        state=makeDefault();
+        render();
+      }
+    });
+
+    $('clearHistoryBtn').addEventListener('click',()=>{
+      state.history=[];
+      render();
+    });
 
     async function boot(){
       setLoginLoading(true);
-      const {data:{session}}=await supabaseClient.auth.getSession();
-      if(session?.user){
+      const {data:{session},error}=await supabaseClient.auth.getSession();
+      if(error){
+        showLogin();
+        setAuthMsg(error.message,true);
+      }else if(session?.user){
         currentUser=session.user;
-        try{await loadStateForUser()}catch(e){showLogin();setAuthMsg('No se pudieron cargar tus datos. Revisa la tabla organizer_state en Supabase.',true)}
-      }else showLogin();
-      booting=false;
+        try{
+          await loadStateForUser();
+        }catch(e){
+          showLogin();
+          setAuthMsg('No se pudieron cargar tus datos. Revisa la tabla organizer_state en Supabase.',true);
+        }
+      }else{
+        showLogin();
+      }
       setLoginLoading(false);
     }
+
     boot();
   </script>
 </body>
