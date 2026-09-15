@@ -271,6 +271,27 @@
           <div id="taskMsg" class="toast"></div>
         </div>
 
+        <div id="editTaskPanel" class="panel editTaskPanel compactPanel hidden">
+          <div class="sectionTitle"><h3>Editar tarea</h3><span class="hint">Cambia lo que ya tenías apuntado</span></div>
+          <form id="editTaskForm" class="formGrid compactForm">
+            <input id="editTaskId" type="hidden" />
+            <input id="editTaskName" placeholder="Nombre de la tarea" required />
+            <select id="editTaskPlace"></select>
+            <div class="two">
+              <select id="editTaskPriority">
+                <option value="">Importancia</option><option>Muy alta</option><option>Alta</option><option>Intermedia</option><option>Baja</option><option>Muy baja</option>
+              </select>
+              <input id="editTaskDeadline" type="date" />
+            </div>
+            <textarea id="editTaskNotes" placeholder="Notas opcionales"></textarea>
+            <div class="toolbar">
+              <button class="btn primary" type="submit">Guardar cambios</button>
+              <button id="cancelEditTaskBtn" class="btn ghost" type="button">Cancelar</button>
+            </div>
+          </form>
+          <div id="editTaskMsg" class="toast"></div>
+        </div>
+
         <div class="panel placePanel compactPanel">
           <div class="sectionTitle"><h3>Lugares</h3><span class="hint">Casa, uni...</span></div>
           <form id="placeForm" class="formGrid compactForm">
@@ -425,6 +446,7 @@
           ((a.createdAt||'').localeCompare(b.createdAt||''))
         );
     }
+
     function chipClass(p){return (priorityValue[p]||0)>=4?'high':(priorityValue[p]||0)===3?'mid':'low'}
     function priorityText(p){return p||''}
     function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -439,6 +461,34 @@
     }
     function noteHtml(t){return t.notes?`<p class="note">${esc(t.notes)}</p>`:''}
     function taskBarClass(t){return priorityValue[t.priority]||0}
+
+    function fillEditPlaces(){
+      const el=$('editTaskPlace');
+      if(el)el.innerHTML=state.places.map(p=>`<option>${esc(p)}</option>`).join('');
+    }
+
+    function openTaskEditor(id){
+      const t=state.tasks.find(x=>x.id===id);
+      if(!t)return;
+      fillEditPlaces();
+      $('editTaskId').value=t.id;
+      $('editTaskName').value=t.name||'';
+      $('editTaskPlace').value=t.place||state.currentPlace;
+      $('editTaskPriority').value=t.priority||'';
+      $('editTaskDeadline').value=t.deadline||'';
+      $('editTaskNotes').value=t.notes||'';
+      $('editTaskPanel').classList.remove('hidden');
+      $('editTaskMsg').textContent='';
+      $('editTaskPanel').scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(()=>$('editTaskName').focus(),250);
+    }
+
+    function closeTaskEditor(){
+      $('editTaskPanel').classList.add('hidden');
+      $('editTaskForm').reset();
+      $('editTaskId').value='';
+    }
+
     function addHistory(text){
       state.history.unshift({text,at:new Date().toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'})});
       state.history=state.history.slice(0,60);
@@ -464,13 +514,17 @@
     async function loadStateForUser(){
       if(!currentUser)return;
       readyForSave=false;
+
       const {data,error}=await supabaseClient
         .from('organizer_state')
         .select('state')
         .eq('user_id',currentUser.id)
         .maybeSingle();
 
-      if(error){console.error(error);throw error}
+      if(error){
+        console.error(error);
+        throw error;
+      }
 
       if(data?.state){
         state=normalizeState(data.state);
@@ -479,7 +533,10 @@
         const {error:insertError}=await supabaseClient
           .from('organizer_state')
           .insert({user_id:currentUser.id,state});
-        if(insertError){console.error(insertError);throw insertError}
+        if(insertError){
+          console.error(insertError);
+          throw insertError;
+        }
       }
 
       const resetChanged=resetDoneTodayIfNeeded();
@@ -500,6 +557,7 @@
       const {error}=await supabaseClient
         .from('organizer_state')
         .upsert(payload,{onConflict:'user_id'});
+
       if(error){
         console.error('Error al guardar:',error);
         $('taskMsg').textContent='No se pudo guardar online. Revisa la conexión.';
@@ -520,6 +578,7 @@
       $('activeAccountTag').textContent='Cuenta: '+(currentUser?.email||'');
       $('currentPlace').innerHTML=state.places.map(p=>`<option ${p===state.currentPlace?'selected':''}>${esc(p)}</option>`).join('');
       $('taskPlace').innerHTML=state.places.map(p=>`<option ${p===state.currentPlace?'selected':''}>${esc(p)}</option>`).join('');
+      fillEditPlaces();
       $('placesList').innerHTML=state.places.map(p=>`<div class="placePill">📍 ${esc(p)} <button type="button" data-del-place="${esc(p)}" aria-label="Borrar ${esc(p)}">×</button></div>`).join('');
 
       const tasks=sortedTasks();
@@ -528,11 +587,11 @@
 
       const top=tasks.find(t=>!t.doneToday)||tasks[0];
       $('topTaskBox').innerHTML=top
-        ? `<div class="badgeRound">⭐</div><div><h2>${esc(top.name)}</h2>${metaHtml(top,true)}${noteHtml(top)}</div><button class="btn primary" type="button" data-done-day="${top.id}">${top.doneToday?'Reabrir hoy':'Hecho hoy'}</button>`
+        ? `<div class="badgeRound">⭐</div><div><h2>${esc(top.name)}</h2>${metaHtml(top,true)}${noteHtml(top)}</div><div class="actions"><button class="btn ghost" type="button" data-edit-task="${top.id}">Editar</button><button class="btn primary" type="button" data-done-day="${top.id}">${top.doneToday?'Reabrir hoy':'Hecho hoy'}</button></div>`
         : `<div class="empty" style="grid-column:1/-1">No hay tareas pendientes aquí.</div>`;
 
       $('taskList').innerHTML=tasks.length
-        ? tasks.map(t=>`<article class="task p${taskBarClass(t)} ${t.doneToday?'doneToday':''}"><div><p class="name">${esc(t.name)}</p>${metaHtml(t,false)}${noteHtml(t)}</div><div class="actions"><button class="btn ghost" type="button" data-done-day="${t.id}">${t.doneToday?'Reabrir hoy':'✓ Hecho hoy'}</button><button class="btn primary" type="button" data-complete="${t.id}">✓ Terminado</button></div></article>`).join('')
+        ? tasks.map(t=>`<article class="task p${taskBarClass(t)} ${t.doneToday?'doneToday':''}"><div><p class="name">${esc(t.name)}</p>${metaHtml(t,false)}${noteHtml(t)}</div><div class="actions"><button class="btn ghost" type="button" data-edit-task="${t.id}">Editar</button><button class="btn ghost" type="button" data-done-day="${t.id}">${t.doneToday?'Reabrir hoy':'✓ Hecho hoy'}</button><button class="btn primary" type="button" data-complete="${t.id}">✓ Terminado</button></div></article>`).join('')
         : `<div class="empty">No tienes tareas pendientes en este lugar.</div>`;
 
       $('historyList').innerHTML=state.history.length
@@ -546,11 +605,13 @@
       setLoginLoading(true);
       setAuthMsg('Entrando...');
       const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+
       if(error){
         setLoginLoading(false);
         setAuthMsg(error.message,true);
         return;
       }
+
       currentUser=data.user;
       try{
         await loadStateForUser();
@@ -571,10 +632,12 @@
         options:{emailRedirectTo:window.location.href.split('#')[0]}
       });
       setLoginLoading(false);
+
       if(error){
         setAuthMsg(error.message,true);
         return;
       }
+
       if(data.session){
         currentUser=data.user;
         await loadStateForUser();
@@ -630,6 +693,30 @@
         $('taskDeadline').value='';
         $('taskMsg').textContent='Tarea añadida.';
         render();
+        return;
+      }
+
+      if(e.target.id==='editTaskForm'){
+        const id=$('editTaskId').value;
+        const t=state.tasks.find(x=>x.id===id);
+        if(!t)return;
+
+        const oldName=t.name;
+        const name=$('editTaskName').value.trim();
+        if(!name)return;
+
+        t.name=name;
+        t.place=$('editTaskPlace').value;
+        t.priority=$('editTaskPriority').value;
+        t.deadline=$('editTaskDeadline').value;
+        t.notes=$('editTaskNotes').value.trim();
+
+        if(t.place!==state.currentPlace)state.currentPlace=t.place;
+        addHistory('Editada: '+oldName+' → '+name);
+        $('editTaskMsg').textContent='Cambios guardados.';
+        closeTaskEditor();
+        render();
+        return;
       }
     });
 
@@ -658,6 +745,12 @@
       const del=e.target.dataset.delPlace;
       const done=e.target.dataset.doneDay;
       const comp=e.target.dataset.complete;
+      const editTask=e.target.dataset.editTask;
+
+      if(editTask){
+        openTaskEditor(editTask);
+        return;
+      }
 
       if(del){
         if(state.places.length===1){
@@ -690,6 +783,8 @@
       }
     });
 
+    $('cancelEditTaskBtn').addEventListener('click',closeTaskEditor);
+
     $('changeAccountBtn').addEventListener('click',async()=>{
       await saveNow();
       await supabaseClient.auth.signOut();
@@ -710,6 +805,7 @@
         const data=JSON.parse($('backupBox').value);
         if(!Array.isArray(data.places)||!Array.isArray(data.tasks))throw new Error();
         state=normalizeState(data);
+        closeTaskEditor();
         render();
       }catch{
         $('backupBox').value='Copia no válida';
@@ -719,6 +815,7 @@
     $('clearBtn').addEventListener('click',()=>{
       if(confirm('¿Borrar todos los datos de esta cuenta?')){
         state=makeDefault();
+        closeTaskEditor();
         render();
       }
     });
@@ -731,6 +828,7 @@
     async function boot(){
       setLoginLoading(true);
       const {data:{session},error}=await supabaseClient.auth.getSession();
+
       if(error){
         showLogin();
         setAuthMsg(error.message,true);
@@ -745,6 +843,7 @@
       }else{
         showLogin();
       }
+
       setLoginLoading(false);
     }
 
