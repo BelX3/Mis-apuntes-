@@ -162,6 +162,11 @@
     .compactForm textarea{min-height:58px}
     .backupPanel textarea{min-height:88px}
     .historyPanel .history{max-height:none}
+    .historyPager{display:flex;justify-content:center;gap:9px;margin-top:14px;align-items:center}
+    .historyNavBtn{width:38px;height:38px;border:1px solid rgba(114,87,255,.18);background:linear-gradient(180deg,#fff,#f7f3ff);color:var(--ink);border-radius:13px;font-size:19px;font-weight:1000;cursor:pointer;box-shadow:var(--shadow-soft);display:grid;place-items:center}
+    .historyNavBtn:hover:not(:disabled){background:linear-gradient(135deg,var(--primary),var(--pink));color:#fff;border-color:transparent}
+    .historyNavBtn:disabled{opacity:.35;cursor:not-allowed}
+    .historyPageInfo{color:var(--muted);font-size:12px;font-weight:900;margin-left:5px}
     .task.p0 .meta{margin-bottom:0}
     .task.p0 .note:empty{display:none}
 
@@ -307,6 +312,7 @@
         <div class="panel historyPanel compactPanel">
           <div class="sectionTitle"><h3>Historial</h3><button id="clearHistoryBtn" class="btn ghost small" type="button">Limpiar</button></div>
           <div id="historyList" class="history"></div>
+          <div id="historyPager" class="historyPager"></div>
         </div>
 
         <div class="panel backupPanel compactPanel">
@@ -331,6 +337,7 @@
     const priorityValue={'Muy baja':1,'Baja':2,'Intermedia':3,'Alta':4,'Muy alta':5};
     let currentUser=null;
     let state=null;
+    let historyPage=1;
     let saveTimer=null;
     let midnightTimer=null;
     let readyForSave=false;
@@ -492,6 +499,7 @@
     function addHistory(text){
       state.history.unshift({text,at:new Date().toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'})});
       state.history=state.history.slice(0,60);
+      historyPage=1;
     }
 
     function setAuthMsg(msg,error=false){
@@ -594,9 +602,21 @@
         ? tasks.map(t=>`<article class="task p${taskBarClass(t)} ${t.doneToday?'doneToday':''}"><div><p class="name">${esc(t.name)}</p>${metaHtml(t,false)}${noteHtml(t)}</div><div class="actions"><button class="btn ghost" type="button" data-edit-task="${t.id}">Editar</button><button class="btn ghost" type="button" data-done-day="${t.id}">${t.doneToday?'Reabrir hoy':'✓ Hecho hoy'}</button><button class="btn primary" type="button" data-complete="${t.id}">✓ Terminado</button></div></article>`).join('')
         : `<div class="empty">No tienes tareas pendientes en este lugar.</div>`;
 
-      $('historyList').innerHTML=state.history.length
-        ? state.history.map(h=>`<div class="historyItem"><span>${esc(h.text)}</span><span>${esc(h.at)}</span></div>`).join('')
+      const historyTotalPages=Math.max(1,Math.ceil(state.history.length/5));
+      if(historyPage>historyTotalPages)historyPage=historyTotalPages;
+      if(historyPage<1)historyPage=1;
+      const hStart=(historyPage-1)*5;
+      const historySlice=state.history.slice(hStart,hStart+5);
+      $('historyList').innerHTML=historySlice.length
+        ? historySlice.map(h=>`<div class="historyItem"><span>${esc(h.text)}</span><span>${esc(h.at)}</span></div>`).join('')
         : `<div class="empty">Todavía no hay historial.</div>`;
+      $('historyPager').innerHTML=state.history.length>10
+        ? `<button class="historyNavBtn" type="button" data-history-nav="first" title="Primera página" ${historyPage===1?'disabled':''}>≪</button>
+           <button class="historyNavBtn" type="button" data-history-nav="prev" title="Página anterior" ${historyPage===1?'disabled':''}>‹</button>
+           <button class="historyNavBtn" type="button" data-history-nav="next" title="Página siguiente" ${historyPage===historyTotalPages?'disabled':''}>›</button>
+           <button class="historyNavBtn" type="button" data-history-nav="last" title="Última página" ${historyPage===historyTotalPages?'disabled':''}>≫</button>
+           <span class="historyPageInfo">${hStart+1}-${Math.min(hStart+5,state.history.length)} de ${state.history.length}</span>`
+        : '';
 
       if(save||resetChanged)queueSave();
     }
@@ -742,6 +762,17 @@
     });
 
     document.addEventListener('click',e=>{
+      const histNav=e.target.dataset.historyNav;
+      if(histNav){
+        const pages=Math.max(1,Math.ceil(state.history.length/5));
+        if(histNav==='first')historyPage=1;
+        if(histNav==='prev')historyPage=Math.max(1,historyPage-1);
+        if(histNav==='next')historyPage=Math.min(pages,historyPage+1);
+        if(histNav==='last')historyPage=pages;
+        render();
+        return;
+      }
+
       const del=e.target.dataset.delPlace;
       const done=e.target.dataset.doneDay;
       const comp=e.target.dataset.complete;
@@ -822,6 +853,7 @@
 
     $('clearHistoryBtn').addEventListener('click',()=>{
       state.history=[];
+      historyPage=1;
       render();
     });
 
