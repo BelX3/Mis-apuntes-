@@ -163,8 +163,9 @@
     .backupPanel textarea{min-height:88px}
     .historyPanel .history{max-height:none}
     .historyPager{display:flex;justify-content:center;gap:9px;margin-top:14px;align-items:center}
-    .historyNavBtn{width:38px;height:38px;border:1px solid rgba(114,87,255,.18);background:linear-gradient(180deg,#fff,#f7f3ff);color:var(--ink);border-radius:13px;font-size:19px;font-weight:1000;cursor:pointer;box-shadow:var(--shadow-soft);display:grid;place-items:center}
-    .historyNavBtn:hover:not(:disabled){background:linear-gradient(135deg,var(--primary),var(--pink));color:#fff;border-color:transparent}
+    .historyNavBtn{width:38px;height:38px;border:1px solid rgba(114,87,255,.18);background:linear-gradient(180deg,#fff,#f7f3ff);color:var(--ink);border-radius:13px;font-size:19px;font-weight:1000;cursor:pointer;box-shadow:var(--shadow-soft);display:grid;place-items:center;transition:background .15s ease,color .15s ease,border-color .15s ease,transform .15s ease}
+    .historyNavBtn:hover:not(:disabled){background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;box-shadow:0 10px 22px rgba(114,87,255,.28)!important;opacity:1!important}
+    .historyNavBtn:active:not(:disabled){background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;transform:translateY(1px);opacity:1!important}
     .historyNavBtn:disabled{opacity:.35;cursor:not-allowed}
     .historyPageInfo{color:var(--muted);font-size:12px;font-weight:900;margin-left:5px}
     .task.p0 .meta{margin-bottom:0}
@@ -611,10 +612,10 @@
         ? historySlice.map(h=>`<div class="historyItem"><span>${esc(h.text)}</span><span>${esc(h.at)}</span></div>`).join('')
         : `<div class="empty">Todavía no hay historial.</div>`;
       $('historyPager').innerHTML=state.history.length>10
-        ? `<button class="historyNavBtn" type="button" data-history-nav="first" title="Primera página" ${historyPage===1?'disabled':''}>≪</button>
+        ? `<button class="historyNavBtn" type="button" data-history-nav="prev2" title="Retroceder dos páginas" ${historyPage===1?'disabled':''}>≪</button>
            <button class="historyNavBtn" type="button" data-history-nav="prev" title="Página anterior" ${historyPage===1?'disabled':''}>‹</button>
            <button class="historyNavBtn" type="button" data-history-nav="next" title="Página siguiente" ${historyPage===historyTotalPages?'disabled':''}>›</button>
-           <button class="historyNavBtn" type="button" data-history-nav="last" title="Última página" ${historyPage===historyTotalPages?'disabled':''}>≫</button>
+           <button class="historyNavBtn" type="button" data-history-nav="next2" title="Avanzar dos páginas" ${historyPage===historyTotalPages?'disabled':''}>≫</button>
            <span class="historyPageInfo">${hStart+1}-${Math.min(hStart+5,state.history.length)} de ${state.history.length}</span>`
         : '';
 
@@ -765,10 +766,10 @@
       const histNav=e.target.dataset.historyNav;
       if(histNav){
         const pages=Math.max(1,Math.ceil(state.history.length/5));
-        if(histNav==='first')historyPage=1;
+        if(histNav==='prev2')historyPage=Math.max(1,historyPage-2);
         if(histNav==='prev')historyPage=Math.max(1,historyPage-1);
         if(histNav==='next')historyPage=Math.min(pages,historyPage+1);
-        if(histNav==='last')historyPage=pages;
+        if(histNav==='next2')historyPage=Math.min(pages,historyPage+2);
         render();
         return;
       }
